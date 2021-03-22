@@ -10,14 +10,19 @@ exports.publishRsvp = (event, context) => {
 
     if (record.eventName === 'INSERT') {
       try {
-        const who = JSON.stringify(record.dynamodb.NewImage.name.S);
-        const people = JSON.stringify(record.dynamodb.NewImage.people.S);
-        const song = JSON.stringify(record.dynamodb.NewImage.song.S);
-        const diet = JSON.stringify(record.dynamodb.NewImage.diet.S);
+        const attending = record.dynamodb.NewImage.attending.S;
+        const who = record.dynamodb.NewImage.name.S;
+        const people = record.dynamodb.NewImage.people.S;
+        const song = record.dynamodb.NewImage.song.S;
+        const diet = record.dynamodb.NewImage.diet.S;
 
         const params = {
           Subject: `A new RSVP from ${who}`,
-          Message: `${who} rsvp'd\nComing with: ${people}\nSong choice: ${song}\nDietary Requirements: ${diet}`,
+          Message: `${who} is ${
+            attending === 'no'
+              ? 'not coming'
+              : `coming\nWith: ${people}\nSong choice: ${song}\nDietary Requirements: ${diet}`
+          }`,
           TopicArn: 'arn:aws:sns:eu-west-1:787958983120:rsvpTopic',
         };
 
