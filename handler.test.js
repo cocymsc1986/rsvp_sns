@@ -39,7 +39,7 @@ describe('handler', () => {
     });
   });
 
-  it('should call sns.publish with payload for yes response', () => {
+  it('should call sns.publish with payload for no response', () => {
     const mockSNSCall = jest.fn();
 
     AWS.mock('SNS', 'publish', mockSNSCall);
